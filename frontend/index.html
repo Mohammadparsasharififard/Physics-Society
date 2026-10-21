@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="سامانه یادگیری هوشمند فیزیک دبیرستان استعدادهای درخشان شهید بهشتی ۲ - آموزش تعاملی، آزمون‌ساز هوشمند و مسابقات هفتگی">
+    <meta name="theme-color" content="#2563eb">
+    <title>سامانه جامع انجمن فیزیک | دبیرستان استعدادهای درخشان شهید بهشتی ۲</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        },
+                        duo: {
+                            green: '#58cc02',
+                            greenDark: '#46a302',
+                            yellow: '#ffc800',
+                            yellowDark: '#e5b400',
+                            blue: '#1cb0f6',
+                            blueDark: '#1899d6',
+                            red: '#ff4b4b',
+                            redDark: '#ea2b2b'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Vazirmatn', 'system-ui', '-apple-system', 'sans-serif'],
+                        mono: ['Vazirmatn', 'ui-monospace', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts: Vazirmatn Persian Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- KaTeX for Scientific Formulas and Equations -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col font-sans antialiased transition-colors duration-200">
+
+    <!-- Top Navigation Bar -->
+    <div id="navbar-container"></div>
+
+    <!-- Main Content Container (SPA Views Rendered Here) -->
+    <main id="app-main-content" class="flex-1 w-full"></main>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-10 mt-auto transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div class="md:col-span-2 space-y-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-md">
+                            <i data-lucide="atom" class="w-5 h-5"></i>
+                        </div>
+                        <span class="font-bold text-base text-slate-900 dark:text-white">انجمن علمی فیزیک دبیرستان شهید بهشتی ۲</span>
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed max-w-md">
+                        پلتفرم تخصصی آموزش و یادگیری تعاملی فیزیک، طراحی‌شده بر اساس سرفصل‌های کتاب درسی رسمی و کتب تکمیلی استعدادهای درخشان (سمپاد) برای پایه‌های هفتم، هشتم و نهم دوره اول متوسطه.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold text-slate-900 dark:text-white mb-3">دسترسی سریع</h4>
+                    <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-400">
+                        <li><a href="#curriculum" onclick="window.store.setView('curriculum')" class="hover:text-blue-600 transition-colors">سرفصل دروس و مباحث</a></li>
+                        <li><a href="#competitions" onclick="window.store.setView('competitions')" class="hover:text-blue-600 transition-colors">مسابقات هفتگی فیزیک</a></li>
+                        <li><a href="#leaderboards" onclick="window.store.setView('leaderboards')" class="hover:text-blue-600 transition-colors">جدول رتبه‌بندی دانش‌آموزان</a></li>
+                        <li><a href="#badges" onclick="window.store.setView('badges')" class="hover:text-blue-600 transition-colors">مدال‌ها و دستاوردها</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold text-slate-900 dark:text-white mb-3">منابع علمی</h4>
+                    <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-400">
+                        <li>کتاب علوم تجربی پایه هفتم، هشتم و نهم (رسمی)</li>
+                        <li>کتب تکمیلی علوم دوره اول سمپاد (استعدادهای درخشان)</li>
+                        <li>سامانه تصحیح هوشمند تشریحی با سنجه ارزیابی</li>
+                        <li>بانک ۳۶۰ سوال تستی و تشریحی فیزیک</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pt-6 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 dark:text-slate-500 gap-4">
+                <span>© دبیرستان استعدادهای درخشان شهید بهشتی ۲ — انجمن علمی فیزیک. تمامی حقوق محفوظ است.</span>
+                <div class="flex items-center gap-4">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 font-medium">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        سامانه فعال است
+                    </span>
+                    <a href="/api/docs" target="_blank" class="hover:text-blue-600">مستندات API</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Core Scripts -->
+    <script src="/js/store.js"></script>
+    <script src="/js/api.js"></script>
+    <script src="/js/components/navbar.js"></script>
+    <script src="/js/components/physics_simulators.js"></script>
+    <script src="/js/components/duolingo_player.js"></script>
+    <script src="/js/components/exam_runner.js"></script>
+    <script src="/js/components/competition_view.js"></script>
+    <script src="/js/components/leaderboards.js"></script>
+    <script src="/js/components/admin_views.js"></script>
+    <script src="/js/app.js"></script>
+
+    <!-- Math rendering helper -->
+    <script>
+        function renderMathInPage() {
+            if (window.renderMathInElement) {
+                window.renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false},
+                        {left: '\\(', right: '\\)', display: false},
+                        {left: '\\[', right: '\\]', display: true}
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
+        window.addEventListener('view-changed', () => {
+            setTimeout(renderMathInPage, 100);
+        });
+    </script>
+</body>
+</html>

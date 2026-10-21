@@ -1,0 +1,19 @@
+# Environment variables
+.env
+
+# Databases
+*.db
+backend/*.db
+
+# Python cache and build
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+venv/
+env/
+.venv/
+
+# OS files
+.DS_Store
+Thumbs.db

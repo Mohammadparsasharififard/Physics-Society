@@ -1,0 +1,177 @@
+/* Vazirmatn Persian Typography and Custom Styles */
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap');
+
+:root {
+    --font-fa: 'Vazirmatn', system-ui, -apple-system, sans-serif;
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --success: #16a34a;
+    --warning: #d97706;
+    --danger: #dc2626;
+    --duo-green: #58cc02;
+    --duo-green-border: #46a302;
+    --duo-yellow: #ffc800;
+    --duo-blue: #1cb0f6;
+    --duo-red: #ff4b4b;
+    --duo-purple: #8b5cf6;
+    --duo-purple-border: #7c3aed;
+}
+
+* {
+    font-variant-ligatures: normal;
+    text-rendering: optimizeLegibility;
+    -webkit-font-feature-settings: "ss01" on;
+    font-feature-settings: "ss01" on;
+}
+
+body {
+    font-family: var(--font-fa);
+    direction: rtl;
+    text-align: right;
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: 0;
+}
+
+/* Dark Laboratory Blueprint Background */
+.dark body, html.dark body {
+    background-color: #070b14;
+    background-image: 
+        radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.12), transparent 45%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 100% 100%, 36px 36px, 36px 36px;
+    background-attachment: fixed;
+}
+
+/* Persian numerals helper */
+.fa-num {
+    font-feature-settings: "ss01";
+}
+
+/* 3D Duolingo-style action buttons */
+.btn-duo-green {
+    background-color: var(--duo-green);
+    border-bottom: 4px solid var(--duo-green-border);
+    transition: all 0.1s ease;
+}
+.btn-duo-green:active {
+    transform: translateY(2px);
+    border-bottom-width: 2px;
+}
+
+.btn-duo-blue {
+    background-color: var(--duo-blue);
+    border-bottom: 4px solid #1899d6;
+    transition: all 0.1s ease;
+}
+.btn-duo-blue:active {
+    transform: translateY(2px);
+    border-bottom-width: 2px;
+}
+
+.btn-duo-yellow {
+    background-color: var(--duo-yellow);
+    border-bottom: 4px solid #e5b400;
+    transition: all 0.1s ease;
+}
+.btn-duo-yellow:active {
+    transform: translateY(2px);
+    border-bottom-width: 2px;
+}
+
+.btn-duo-purple {
+    background-color: var(--duo-purple);
+    border-bottom: 4px solid var(--duo-purple-border);
+    transition: all 0.1s ease;
+}
+.btn-duo-purple:active {
+    transform: translateY(2px);
+    border-bottom-width: 2px;
+}
+
+/* 3D Physics Cards */
+.physics-card-3d {
+    position: relative;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.06);
+}
+.dark .physics-card-3d {
+    background: linear-gradient(145deg, rgba(15, 23, 42, 0.8), rgba(11, 17, 33, 0.95));
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(59, 130, 246, 0.15);
+    box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.4);
+}
+.dark .physics-card-3d:hover {
+    transform: translateY(-4px);
+    border-color: rgba(59, 130, 246, 0.45);
+    box-shadow: 0 16px 32px -8px rgba(37, 99, 235, 0.25), 0 0 15px rgba(59, 130, 246, 0.15);
+}
+
+/* Physics Laboratory Sliders */
+input[type=range].physics-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 8px;
+    border-radius: 4px;
+    background: #334155;
+    outline: none;
+}
+input[type=range].physics-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #3b82f6;
+    cursor: pointer;
+    border: 3px solid #ffffff;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.8);
+    transition: transform 0.1s ease;
+}
+input[type=range].physics-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+/* Pulse animation for active streak flame */
+@keyframes flame-pulse {
+    0%, 100% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(249, 115, 22, 0.4)); }
+    50% { transform: scale(1.12); filter: drop-shadow(0 0 8px rgba(249, 115, 22, 0.8)); }
+}
+.streak-flame-active {
+    animation: flame-pulse 2s infinite ease-in-out;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #0f172a;
+}
+::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #475569;
+}
+
+/* Glassmorphism modals */
+.glass-modal {
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+/* Animated electron flow */
+@keyframes electron-dash {
+    to {
+        stroke-dashoffset: -40;
+    }
+}
+.circuit-wire-active {
+    stroke-dasharray: 6 6;
+    animation: electron-dash 1.2s linear infinite;
+}

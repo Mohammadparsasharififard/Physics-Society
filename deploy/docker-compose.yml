@@ -1,0 +1,93 @@
+# ==============================================================================
+# Docker Compose: Physics Association Platform - Shahid Beheshti 2 School
+# Production Multi-Service Stack: Nginx Reverse Proxy + FastAPI + PostgreSQL 16
+# ==============================================================================
+
+version: '3.8'
+
+services:
+  # ----------------------------------------------------------------------------
+  # 1. PostgreSQL Database Service
+  # ----------------------------------------------------------------------------
+  db:
+    image: postgres:16-alpine
+    container_name: physics_postgres_prod
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-physics_db}
+      POSTGRES_USER: ${POSTGRES_USER:-physics_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ChangeMeSecurePassword123!}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-physics_user} -d ${POSTGRES_DB:-physics_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - internal_net
+
+  # ----------------------------------------------------------------------------
+  # 2. FastAPI Application Backend & Worker
+  # ----------------------------------------------------------------------------
+  app:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    container_name: physics_fastapi_prod
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - ENVIRONMENT=production
+      - DEBUG=False
+      - SECRET_KEY=${SECRET_KEY:-beheshti2_super_secret_jwt_key_physics_society_2026_xyz}
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-physics_user}:${POSTGRES_PASSWORD:-ChangeMeSecurePassword123!}@db:5432/${POSTGRES_DB:-physics_db}
+      - AI_PROVIDER=${AI_PROVIDER:-mock}
+      - AI_API_KEY=${AI_API_KEY:-}
+      - AI_API_BASE_URL=${AI_API_BASE_URL:-https://api.openai.com/v1}
+      - AI_MODEL_NAME=${AI_MODEL_NAME:-gpt-4o-mini}
+      - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost,https://physics.beheshti2.ir}
+    volumes:
+      - textbooks_data:/app/data/textbooks
+      - uploads_data:/app/data/uploads
+    networks:
+      - internal_net
+
+  # ----------------------------------------------------------------------------
+  # 3. Nginx Reverse Proxy & SSL Termination
+  # ----------------------------------------------------------------------------
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: physics_nginx_prod
+    restart: always
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ../frontend:/var/www/frontend:ro
+      - certbot_conf:/etc/letsencrypt:ro
+      - certbot_www:/var/www/certbot:ro
+    networks:
+      - internal_net
+
+networks:
+  internal_net:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    name: physics_db_volume
+  textbooks_data:
+    name: physics_textbooks_volume
+  uploads_data:
+    name: physics_uploads_volume
+  certbot_conf:
+    name: physics_certbot_conf
+  certbot_www:
+    name: physics_certbot_www
