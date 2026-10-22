@@ -31,7 +31,7 @@ async def lifespan(app: FastAPI):
     # Shutdown logic if any
 
 app = FastAPI(
-    title="سامانه جامع انجمن فیزیک دبیرستان شهید بهشتی ۲",
+    title="انجمن فیزیک شهید بهشتی دو دوره اول",
     description="پلتفرم آموزشی، یادگیری تعاملی، آزمون‌ساز هوشمند و مسابقات هفتگی فیزیک (پایه‌های هفتم، هشتم و نهم)",
     version="1.0.0",
     docs_url="/api/docs",
@@ -40,6 +40,16 @@ app = FastAPI(
 )
 
 # CORS Middleware
+@app.middleware("http")
+async def add_security_headers(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "SAMEORIGIN"
+    response.headers["X-XSS-Protection"] = "1; mode=block"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["Permissions-Policy"] = "geolocation=(), microphone=(), camera=()"
+    return response
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins,

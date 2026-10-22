@@ -15,8 +15,8 @@ function renderNavbar() {
                         <i data-lucide="atom" class="w-6 h-6"></i>
                     </div>
                     <div>
-                        <span class="font-bold text-lg text-slate-800 dark:text-white leading-tight block">انجمن فیزیک</span>
-                        <span class="text-xs text-slate-500 dark:text-slate-400 block">دبیرستان شهید بهشتی ۲</span>
+                        <span class="font-bold text-lg text-slate-800 dark:text-white leading-tight block">انجمن فیزیک شهید بهشتی دو</span>
+                        <span class="text-xs text-blue-600 dark:text-blue-400 font-semibold block">دوره اول</span>
                     </div>
                 </div>
 

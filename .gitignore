@@ -1,9 +1,24 @@
-# Environment variables
+# Environment & Secret files
 .env
+*.env
+.env.*
+!.env.example
 
 # Databases
 *.db
 backend/*.db
+
+# Logs and runtime data
+*.log
+data/uploads/*
+!data/uploads/.gitkeep
+data/logs/*
+!data/logs/.gitkeep
+
+# Local overrides
+compose.tailscale.yml
+docker-compose.override.yml
+powershell.cmd
 
 # Python cache and build
 __pycache__/

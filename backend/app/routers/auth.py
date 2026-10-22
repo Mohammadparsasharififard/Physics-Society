@@ -1,3 +1,10 @@
+import time
+from collections import defaultdict
+from fastapi import Request
+
+_login_failed_attempts = defaultdict(list)
+MAX_LOGIN_FAILURES = 5
+LOCKOUT_PERIOD_SECONDS = 300
 from datetime import datetime, timedelta
 from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -113,14 +120,26 @@ def register_student(user_data: UserCreate, db: Session = Depends(get_db)):
     return TokenResponse(access_token=token, user=format_user_response(user))
 
 @router.post("/login", response_model=TokenResponse)
-def login(credentials: UserLogin, db: Session = Depends(get_db)):
-    """Authenticates user and returns JWT access token"""
+def login(credentials: UserLogin, request: Request, db: Session = Depends(get_db)):
+    """Authenticates user and returns JWT access token with brute-force rate limiting"""
+    client_ip = request.client.host if request.client else "unknown"
+    now = time.time()
+    recent = [t for t in _login_failed_attempts[client_ip] if now - t < LOCKOUT_PERIOD_SECONDS]
+    _login_failed_attempts[client_ip] = recent
+    if len(recent) >= MAX_LOGIN_FAILURES:
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="تعداد تلاش‌های ناموفق بیش از حد مجاز است. لطفاً ۵ دقیقه دیگر دوباره تلاش کنید."
+        )
+
     user = db.query(User).filter(User.username == credentials.username.strip()).first()
     if not user or not verify_password(credentials.password, user.hashed_password):
+        _login_failed_attempts[client_ip].append(now)
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="نام کاربری یا رمز عبور اشتباه است."
         )
+    _login_failed_attempts.pop(client_ip, None)
 
     if not user.is_active:
         raise HTTPException(

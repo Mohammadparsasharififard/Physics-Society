@@ -20,10 +20,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libmagic1 \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python requirements
+# Install Python requirements via trusted mirror
 COPY backend/requirements.txt /app/backend/requirements.txt
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r /app/backend/requirements.txt
+RUN pip install --no-cache-dir -i https://mirror-pypi.runflare.com/simple --trusted-host mirror-pypi.runflare.com -r /app/backend/requirements.txt
 
 # Copy backend application source
 COPY backend /app/backend
@@ -50,5 +49,5 @@ EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
     CMD curl -f http://127.0.0.1:8000/api/health || exit 1
 
-# Production server entrypoint with 4 Uvicorn worker processes
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4", "--proxy-headers", "--forwarded-allow-ips", "*"]
+# Production server entrypoint
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1", "--proxy-headers", "--forwarded-allow-ips", "*"]
